@@ -32,7 +32,9 @@ else
 end
 
 target.Parent.MinimumHeights(end) = 30;
-target.Parent.Heights(end) = -1;
+if ~strcmp( inserted.Tag, 'Repeat' )
+    target.Parent.Heights(end) = 30;
+end
 insertBefore( target.Parent, target, inserted );
 
 placeholder = createPlaceholder( target.Parent );

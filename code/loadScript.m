@@ -6,11 +6,14 @@ for n = 1:size( contents, 1 )
     value = contents{n,2};
     createPlaceholder( script );
     block = menuCopy( findobj( menu, 'Tag', name ), script );
-    script.Heights(end) = -1;
+    
     block.Contents(1).Contents(2).String = value;
     if strcmp( name, 'Repeat' )
         inner = contents{n,3};
+        script.Heights(end) = -1;
         loadScript( menu, block.Contents(2), inner );
+    else
+        script.Heights(end) = 30;
     end
 end
 createPlaceholder( script );
