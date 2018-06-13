@@ -1,6 +1,5 @@
-function item = menuItem( menu, registry, name, fn, value, units )
+function item = menuItem( menu, name, fn, value, units )
 item = createBlock( name, value, units );
-set( item, 'Parent', menu, 'UserData', {name,value,units} );
-registry(name) = fn; %#ok<NASGU>
+set( item, 'Parent', menu, 'UserData', {name,value,units,fn} );
 set( findobj( item ), 'ButtonDownFcn', @clickBlock );
 end

@@ -1,10 +1,9 @@
 function clickPlaceholder(target,~)
 assert( strcmp( target.Tag, 'placeholder' ) )
 window = gcbf();
-registry = getappdata( window, 'ScriptRegistry' );
 
 % An existing selected block
-selectedBlock = findobj( window, 'Tag', 'block', 'BackgroundColor', [1 0 0] );
+selectedBlock = findobj( window, 'BackgroundColor', [1 0 0] );
 if isempty( selectedBlock )
     return
 end
@@ -14,28 +13,14 @@ script = findobj( window, 'Tag', 'script' );
 
 if ismember( selectedBlock, menu.Contents )
     % copy the block from the menu to the script
-    args = selectedBlock.UserData;
-    inserted = createBlock( args{1:3} ); % I want to use copyobj!
-    set( inserted, 'Parent', target.Parent, 'UserData', args );
-    set( findobj( inserted ), 'ButtonDownFcn', @clickBlock );
-
-    if strcmp( inserted.UserData{1}, 'Repeat' )
-        % Further workaround because of copyobj not working
-        rptContainer = uix.VBox( 'Parent', inserted,  'Spacing', 10, 'Padding', 10, 'BackgroundColor', [1 0.5 0] );
-        inserted.MinimumHeights = [30 30];
-        placeholder = copyobj( target, rptContainer );
-        placeholder.ButtonDownFcn = @clickPlaceholder; % copyobj does not copy callbacks
-        target.Parent.MinimumHeights(end) = 60;
-    else
-        target.Parent.MinimumHeights(end) = 30;
-    end
+    inserted = menuCopy( selectedBlock, target.Parent );
 
 elseif ismember( target, menu.Contents )
     % back onto menu, from script, so delete
     % remove the placeholder preceding the selected block
     idx = find( selectedBlock.Parent.Contents == selectedBlock );
     delete( selectedBlock.Parent.Contents(idx-1:idx) );  
-    runScript( script, registry )
+    runScript( script )
     return
 else
     % remove the placeholder preceding the selected block
@@ -46,12 +31,11 @@ else
     inserted.Parent = target.Parent;
 end
 
+target.Parent.MinimumHeights(end) = 30;
+target.Parent.Heights(end) = -1;
 insertBefore( target.Parent, target, inserted );
 
-placeholder = copyobj( target, target.Parent );
-target.Parent.MinimumHeights(end) = 10;
-target.Parent.Heights(end) = 10;
-placeholder.ButtonDownFcn = @clickPlaceholder; % copyobj does not copy callbacks
+placeholder = createPlaceholder( target.Parent );
 insertBefore( target.Parent, inserted, placeholder );
 
 % Resize the parent heights so content generally "fits"
@@ -63,6 +47,6 @@ while isa( parent.Parent, 'uix.VBox' )
     parent = parent.Parent;
 end
 
-runScript( script, registry )
+runScript( script )
 
 end

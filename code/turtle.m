@@ -1,4 +1,7 @@
-function turtle
+function turtle( filename )
+if nargin < 1
+    filename = 'examples/init.json';
+end
 
 window = figure( 'Toolbar', 'none', 'Menu', 'none', 'Name', 'turtle' );
 hbox = uix.HBoxFlex( 'Parent', window, 'Spacing', 5 );
@@ -8,33 +11,26 @@ canvas = axes( 'Parent', hbox, 'Tag', 'canvas' );
 grid( canvas, 'on' );
 hbox.Widths = [-1 -1 -2];
 
-% Not part of turtle
-registry = containers.Map( 'KeyType', 'char', 'ValueType', 'any' );
+bbox = uix.HButtonBox( 'Parent', menu );
+uicontrol( 'Parent', bbox, 'String', 'Load', 'Callback', {@loadScriptFromFile,menu,script} )
+uicontrol( 'Parent', bbox, 'String', 'Save', 'Callback', {@saveScriptToFile,script} )
 
-% For deleting blocks
-uix.VBox( 'BackgroundColor', 'blue', 'Tag', 'placeholder', 'Parent', menu, ...
-    'ButtonDownFcn', @clickPlaceholder);
-
-rpt = menuItem( menu, registry, 'Repeat', [], 10, 'times' );
-rptContainer = uix.VBox( 'Parent', rpt,  'Spacing', 10, 'Padding', 10, 'BackgroundColor', [1 0.5 0] );
-set( rpt, 'Heights', [-1 30], 'MinimumHeights', [30 30] );
-uix.VBox( 'BackgroundColor', 'blue', 'Tag', 'placeholder', 'Parent', rptContainer );
+createPlaceholder( menu ); % For deleting blocks
+menuCopy( menuItem( [], 'Repeat', [], 10, 'times' ), menu );
 
 % Turtle
-menuItem( menu, registry, 'Left', @(value)turtleRotate(-value,canvas), 5, 'degrees' );
-menuItem( menu, registry, 'Right', @(value)turtleRotate(value,canvas), 5, 'degrees' );
-menuItem( menu, registry, 'Forward', @(value)turtleForward(value,canvas), 10, 'steps' );
-menuItem( menu, registry, 'Back', @(value)turtleForward(-value,canvas), 10, 'steps' );
-menuItem( menu, registry, 'Pen up', @(value)turtlePen(false,canvas), 0, '' );
-menuItem( menu, registry, 'Pen down', @(value)turtlePen(true,canvas), 0, '' );
-menuItem( menu, registry, 'Back to center', @(value)turtlePosition([0 0],canvas), 0, '' );
-menuItem( menu, registry, 'Clear', @(value)turtleInit(canvas), 0, '' );
-menuItem( menu, registry, 'Draw turtle', @(value)turtleDraw(canvas), 0, '' );
+menuItem( menu, 'Left', @(value)turtleRotate(-value,canvas), 5, 'degrees' );
+menuItem( menu, 'Right', @(value)turtleRotate(value,canvas), 5, 'degrees' );
+menuItem( menu, 'Forward', @(value)turtleForward(value,canvas), 10, 'steps' );
+menuItem( menu, 'Back', @(value)turtleForward(-value,canvas), 10, 'steps' );
+menuItem( menu, 'Pen up', @(value)turtlePen(false,canvas), 0, '' );
+menuItem( menu, 'Pen down', @(value)turtlePen(true,canvas), 0, '' );
+menuItem( menu, 'Back to center', @(value)turtlePosition([0 0],canvas), 0, '' );
+menuItem( menu, 'Clear', @(value)turtleInit(canvas), 0, '' );
+menuItem( menu, 'Draw turtle', @(value)turtleDraw(canvas), 0, '' );
 
-uix.VBox( 'Parent', script, 'BackgroundColor', 'blue', 'Tag', 'placeholder', 'ButtonDownFcn', @clickPlaceholder );
-script.MinimumHeights = [30 10 30];
-
-runScript( script, registry )
-setappdata( window, 'ScriptRegistry', registry )
+contents = jsondecode(fileread(filename));
+loadScript( menu, script, contents );
+runScript( script )
 
 end

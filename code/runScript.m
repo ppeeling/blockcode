@@ -1,20 +1,19 @@
-function runScript( script, registry )
+function runScript( script )
 
 for n = 1:length( script.Contents )
     block = script.Contents(n);
-    if ~strcmp( block.Tag, 'block' )
+    if strcmp( block.Tag, 'placeholder' )
         continue
     end
-    name = block.UserData{1};
-    if strcmp( block.UserData{1}, 'Repeat' )
+    func = block.UserData{4};
+    if ~isempty( func )        
+        feval( func, blockValue( block ) );
+    elseif strcmp( block.UserData{1}, 'Repeat' )        
         R = blockValue( block ); % number of times to repeat
         for r = 1:R
-            runScript( block.Contents(2), registry )
+            runScript( block.Contents(2) )
         end
-    elseif isKey( registry, name )
-        func = registry(name);
-        feval( func, blockValue( block ) );
-    else
+    end
 end
 
 end
