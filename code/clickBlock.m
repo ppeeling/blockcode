@@ -6,18 +6,21 @@ end
 
 window = gcbf();
 
+selectedStyle = Stylesheet.BlockSelected;
+blockStyle = Stylesheet.Block;
+
 % An existing selected block
-selectedBlock = findobj( window, 'BackgroundColor', [1 0 0] );
+selectedBlock = findobj( window, selectedStyle{:} );
 
 if ~isempty( selectedBlock )
     % target was already selected
-    selectedBlock.BackgroundColor = 'blue';
+    set( selectedBlock, blockStyle{:} );    
 end
 
 placeholders = findobj( window, 'Tag', 'placeholder' );
-set( placeholders, 'BackgroundColor', 'blue' )
+set( placeholders, blockStyle{:} )
+set( target, selectedStyle{:} )
 
-target.BackgroundColor = 'red';
 set( window, 'WindowButtonMotionFcn', @mouseOver )
 
 end

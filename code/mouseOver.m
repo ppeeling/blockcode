@@ -2,11 +2,13 @@ function mouseOver(window,evt)
 
 % Highlight blocks in script
 scriptBlocks = findobj( window, 'Tag', 'placeholder' );
-set( scriptBlocks, 'BackgroundColor', 'blue' )
+style = Stylesheet.PlaceholderStyle;
+set( scriptBlocks, style{:} )
 target = evt.HitObject;
 if ~any( scriptBlocks == target)
     return
 end
-set( target, 'BackgroundColor', 'green' );
+style = Stylesheet.PlaceholderHoverOver;
+set( target, style{:} );
 
 end

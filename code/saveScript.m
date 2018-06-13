@@ -13,5 +13,4 @@ for n = 1:length( script.Contents )
         contents{end,3} = saveScript( block.Contents(2) );
     end
 end
-
 end

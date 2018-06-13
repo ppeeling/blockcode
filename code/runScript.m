@@ -11,7 +11,7 @@ for n = 1:length( script.Contents )
     elseif strcmp( block.Tag, 'Repeat' )        
         R = blockValue( block ); % number of times to repeat
         for r = 1:R
-            runScript( block.Contents(2) )
+            runScript( blockContents(block) )
         end
     end
 end

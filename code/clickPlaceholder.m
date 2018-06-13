@@ -3,7 +3,8 @@ assert( strcmp( target.Tag, 'placeholder' ) )
 window = gcbf();
 
 % An existing selected block
-selectedBlock = findobj( window, 'BackgroundColor', [1 0 0] );
+selectedStyle = Stylesheet.BlockSelected;
+selectedBlock = findobj( window, selectedStyle{:} );
 if isempty( selectedBlock )
     return
 end

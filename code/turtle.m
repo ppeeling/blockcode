@@ -1,4 +1,5 @@
 function turtle( filename )
+
 if nargin < 1
     filename = 'examples/init.json';
 end
