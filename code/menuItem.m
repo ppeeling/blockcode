@@ -1,6 +1,6 @@
-function item = menuItem( menu, name, fn, value, units )
+function item = menuItem( menu, registry, name, fn, value, units )
 item = createBlock( name, value, units );
-% scriptRegistry[name] = fn;
-set( item, 'Parent', menu );
+set( item, 'Parent', menu, 'UserData', {name,value,units,fn} );
+registry(name) = fn;
 set( findobj( item ), 'ButtonDownFcn', @clickBlock );
 end

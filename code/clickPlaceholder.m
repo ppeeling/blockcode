@@ -9,11 +9,13 @@ if isempty( selectedBlock )
 end
 
 menu = findobj( window, 'Tag', 'menu' );
+script = findobj( window, 'Tag', 'script' );
+
 if ismember( selectedBlock, menu.Contents )
     % copy the block from the menu to the script
     args = selectedBlock.UserData;
-    inserted = createBlock( args{:} ); % I want to use copyobj!
-    inserted.Parent = target.Parent;
+    inserted = createBlock( args{1:3} ); % I want to use copyobj!
+    set( inserted, 'Parent', target.Parent, 'UserData', args );
     set( findobj( inserted ), 'ButtonDownFcn', @clickBlock );
 
     if strcmp( inserted.UserData{1}, 'Repeat' )
@@ -27,6 +29,13 @@ if ismember( selectedBlock, menu.Contents )
         target.Parent.MinimumHeights(end) = 30;
     end
 
+elseif ismember( target, menu.Contents )
+    % back onto menu, from script, so delete
+    % remove the placeholder preceding the selected block
+    idx = find( selectedBlock.Parent.Contents == selectedBlock );
+    delete( selectedBlock.Parent.Contents(idx-1:idx) );  
+    runScript( script )
+    return
 else
     % remove the placeholder preceding the selected block
     idx = find( selectedBlock.Parent.Contents == selectedBlock );
@@ -52,5 +61,7 @@ while isa( parent.Parent, 'uix.VBox' )
     parent.Parent.Heights(idx) = parent.Parent.Heights(idx) - 1;
     parent = parent.Parent;
 end
+
+runScript( script )
 
 end
