@@ -5,7 +5,7 @@ for n = 1:length( script.Contents )
     if strcmp( block.Tag, 'placeholder' )
         continue
     end
-    name = block.UserData{1};
+    name = block.Tag;
     value = blockValue( block );
     contents{end+1,1} = name;
     contents{end,2} = value;

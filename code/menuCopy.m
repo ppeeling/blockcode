@@ -1,10 +1,8 @@
 function item = menuCopy( menuItem, parent )
-args = menuItem.UserData;
-args{2} = blockValue( menuItem );
-item = createBlock( args{1:3} );
-set( item, 'Parent', parent, 'UserData', args );
+item = createBlock( menuItem.Tag, blockValue(menuItem), blockUnits(menuItem) );
+set( item, 'Parent', parent, 'UserData', menuItem.UserData );
 set( findobj( item ), 'ButtonDownFcn', @clickBlock );
-if strcmp( args{1}, 'Repeat' )
+if strcmp( item.Tag, 'Repeat' )
     container = uix.VBox( 'Parent', item,  'Spacing', 10, 'Padding', 10, 'BackgroundColor', [1 0.5 0] );
     set( item, 'Heights', [30 -1], 'MinimumHeights', [30 30] );
     createPlaceholder( container );

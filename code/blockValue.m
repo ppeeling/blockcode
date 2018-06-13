@@ -1,5 +1,5 @@
 function value = blockValue(block)
-input = findobj( block, 'Tag', 'value', '-depth', 2 );
+input = findobj( block, 'Style', 'edit', '-depth', 2 );
 if isempty( input )
     value = input;
 else

@@ -7,7 +7,6 @@ for n = 1:size( contents, 1 )
     createPlaceholder( script );
     block = menuCopy( findobj( menu, 'Tag', name ), script );
     script.Heights(end) = -1;
-    block.UserData{2} = value;
     block.Contents(1).Contents(2).String = value;
     if strcmp( name, 'Repeat' )
         inner = contents{n,3};

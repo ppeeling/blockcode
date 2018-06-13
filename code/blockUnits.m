@@ -1,8 +1,8 @@
-function units = blockUnits(block)
-input = findobj( block, 'Tag', 'units' );
+function value = blockUnits(block)
+input = findobj( block, 'Style', 'text', '-depth', 2 );
 if isempty( input )
-    units = input;
+    value = input;
 else
-    units = input.String;
+    value = input.String;
 end
 end
