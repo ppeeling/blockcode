@@ -1,7 +1,7 @@
 function turtle
 
-f = figure( 'Toolbar', 'none', 'Menu', 'none', 'Name', 'turtle' );
-hbox = uix.HBoxFlex( 'Parent', f, 'Spacing', 5 );
+window = figure( 'Toolbar', 'none', 'Menu', 'none', 'Name', 'turtle' );
+hbox = uix.HBoxFlex( 'Parent', window, 'Spacing', 5 );
 menu = uix.VBox( 'Parent', hbox, 'Tag', 'menu', 'Spacing', 10, 'Padding', 10, 'BackgroundColor', [1 0.5 0] );
 script = uix.VBox( 'Parent', hbox, 'Tag', 'script', 'Spacing', 10, 'Padding', 10, 'BackgroundColor', [1 0.5 0] );
 canvas = axes( 'Parent', hbox, 'Tag', 'canvas' );
@@ -28,12 +28,13 @@ menuItem( menu, registry, 'Back', @(value)turtleForward(-value,canvas), 10, 'ste
 menuItem( menu, registry, 'Pen up', @(value)turtlePen(false,canvas), 0, '' );
 menuItem( menu, registry, 'Pen down', @(value)turtlePen(true,canvas), 0, '' );
 menuItem( menu, registry, 'Back to center', @(value)turtlePosition([0 0],canvas), 0, '' );
+menuItem( menu, registry, 'Clear', @(value)turtleInit(canvas), 0, '' );
+menuItem( menu, registry, 'Draw turtle', @(value)turtleDraw(canvas), 0, '' );
 
-menuItem( script, registry, 'Init', @(value)turtleInit(canvas), 0, '' );
 uix.VBox( 'Parent', script, 'BackgroundColor', 'blue', 'Tag', 'placeholder', 'ButtonDownFcn', @clickPlaceholder );
-menuItem( script, registry, 'Draw turtle', @(value)turtleDraw(canvas), 0, '' );
 script.MinimumHeights = [30 10 30];
 
-runScript( script )
+runScript( script, registry )
+setappdata( window, 'ScriptRegistry', registry )
 
 end

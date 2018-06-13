@@ -1,6 +1,7 @@
 function clickPlaceholder(target,~)
 assert( strcmp( target.Tag, 'placeholder' ) )
 window = gcbf();
+registry = getappdata( window, 'ScriptRegistry' );
 
 % An existing selected block
 selectedBlock = findobj( window, 'Tag', 'block', 'BackgroundColor', [1 0 0] );
@@ -34,7 +35,7 @@ elseif ismember( target, menu.Contents )
     % remove the placeholder preceding the selected block
     idx = find( selectedBlock.Parent.Contents == selectedBlock );
     delete( selectedBlock.Parent.Contents(idx-1:idx) );  
-    runScript( script )
+    runScript( script, registry )
     return
 else
     % remove the placeholder preceding the selected block
@@ -62,6 +63,6 @@ while isa( parent.Parent, 'uix.VBox' )
     parent = parent.Parent;
 end
 
-runScript( script )
+runScript( script, registry )
 
 end
