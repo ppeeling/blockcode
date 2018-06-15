@@ -43,13 +43,16 @@ insertBefore( target.Parent, inserted, placeholder );
 
 % Resize the parent heights so content generally "fits"
 parent = target.Parent;
-while isa( parent.Parent, 'uix.VBox' )
-    idx = find( parent.Parent.Contents == parent );
-    parent.Parent.MinimumHeights(idx) = parent.Parent.MinimumHeights(idx) + 30;
-    parent.Parent.Heights(idx) = parent.Parent.Heights(idx) - 1;
+while ~isa( parent.Parent, 'uix.HBox' )
+    if isa( parent, 'uix.ScrollingPanel' ) % Update scrollbar height
+        parent.MinimumHeights = sum( parent.Contents.MinimumHeights ) + length( parent.Contents.MinimumHeights ) * 10;
+    else
+        idx = find( parent.Parent.Contents == parent );
+        parent.Parent.MinimumHeights(idx) = parent.Parent.MinimumHeights(idx) + 30;
+        parent.Parent.Heights(idx) = parent.Parent.Heights(idx) - 1;
+    end
     parent = parent.Parent;
 end
-
 runScript( script )
 
 end

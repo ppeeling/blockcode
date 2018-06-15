@@ -1,3 +1,3 @@
 function contents = blockContents(block)
-contents = block.Contents(2);
+contents = block.Contents(2).Contents;
 end

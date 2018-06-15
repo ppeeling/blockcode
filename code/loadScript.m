@@ -6,7 +6,7 @@ for n = 1:size( contents, 1 )
     value = contents{n,2};
     createPlaceholder( script );
     block = menuCopy( findobj( menu, 'Tag', name ), script );    
-    block.Contents(1).Contents(2).String = value; % Needs a setBlockValue function
+    blockValue( block, value ); % set Block Value
     if strcmp( name, 'Repeat' )
         inner = contents{n,3};
         script.Heights(end) = -1;
@@ -16,5 +16,7 @@ for n = 1:size( contents, 1 )
     end
 end
 createPlaceholder( script );
+% Update scrollbar height
+script.Parent.MinimumHeights = sum( script.MinimumHeights ) + length( script.MinimumHeights ) * 10;
 
 end
