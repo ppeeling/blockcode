@@ -45,7 +45,7 @@ insertBefore( target.Parent, inserted, placeholder );
 parent = target.Parent;
 while ~isa( parent.Parent, 'uix.HBox' )
     if isa( parent, 'uix.ScrollingPanel' ) % Update scrollbar height
-        parent.MinimumHeights = sum( parent.Contents.MinimumHeights ) + length( parent.Contents.MinimumHeights ) * 10;
+        parent.MinimumHeights = sum( parent.Contents.MinimumHeights ) + length( parent.Contents.MinimumHeights ) * parent.Contents.Spacing;
     else
         idx = find( parent.Parent.Contents == parent );
         parent.Parent.MinimumHeights(idx) = parent.Parent.MinimumHeights(idx) + 30;

@@ -17,6 +17,6 @@ for n = 1:size( contents, 1 )
 end
 createPlaceholder( script );
 % Update scrollbar height
-script.Parent.MinimumHeights = sum( script.MinimumHeights ) + length( script.MinimumHeights ) * 10;
+script.Parent.MinimumHeights = sum( script.MinimumHeights ) + length( script.MinimumHeights ) * script.Spacing;
 
 end

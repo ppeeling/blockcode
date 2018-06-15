@@ -6,9 +6,10 @@ end
 
 window = figure( 'Toolbar', 'none', 'Menu', 'none', 'Name', 'turtle' );
 hbox = uix.HBoxFlex( 'Parent', window, 'Spacing', 5 );
-menu = uix.VBox( 'Parent', hbox, 'Tag', 'menu', 'Spacing', 10, 'Padding', 10, 'BackgroundColor', [1 0.5 0] );
+style = Stylesheet.Background;
+menu = uix.VBox( 'Parent', hbox, 'Tag', 'menu', style{:} );
 scroll = uix.ScrollingPanel( 'Parent', hbox, 'Tag', 'scroll' );
-script = uix.VBox( 'Parent', scroll, 'Tag', 'script', 'Spacing', 10, 'Padding', 10, 'BackgroundColor', [1 0.5 0] );
+script = uix.VBox( 'Parent', scroll, 'Tag', 'script', style{:} );
 canvas = axes( 'Parent', hbox, 'Tag', 'canvas' );
 grid( canvas, 'on' );
 hbox.Widths = [-1 -1 -2];
